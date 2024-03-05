@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\DTO\ContactDTO;
 use App\Form\ContactType;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,22 +15,29 @@ use Symfony\Component\Routing\Attribute\Route;
 class ContactController extends AbstractController
 {
     #[Route('/contact', name: 'contact.index')]
-    public function index(Request $request, MailerInterface $mailer): Response
+    public function contact(Request $request, MailerInterface $mailer): Response
     {
 
         $contact = new ContactDTO();
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
         if($form->isSubmitted() && $form->isValid()){
-            $email = (new Email())
-                ->from('RecipeWeb@example.com')
-                ->to($contact->getMail())
-                ->subject('Mail send by Symfony')
-                ->text($contact->getName() . ' : SEND : ' . $contact->getMessage());
-            $mailer->send($email);
+            try{
+                $email = (new TemplatedEmail())
+                    ->from($contact->email)
+                    ->to($contact->services)
+                    ->subject('Mail send by Symfony')
+                    ->htmlTemplate('emails/contact.html.twig')
+                    ->context(['data' => $contact]);
+                $mailer->send($email);
 
-            $this->addFlash('success', 'Mail send successfully');
-            return $this->redirectToRoute('contact.index');
+                $this->addFlash('success', 'Mail send successfully');
+                return $this->redirectToRoute('contact.index');
+            }
+            catch(\Exception $e){
+                $this->addFlash('danger', 'Mail not send / ERROR !');
+            }
+            
         }
 
         return $this->render('contact/index.html.twig', [

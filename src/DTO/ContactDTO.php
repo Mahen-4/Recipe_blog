@@ -1,31 +1,27 @@
 <?php 
 namespace App\DTO;
 
+use App\Validator\DotCom;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class ContactDTO {
 
+    #[Assert\NotBlank()]
     #[Assert\Length(min:2)]
-    public string $name;
+    public string $name = '';
 
+    #[Assert\NotBlank()]
     #[Assert\Email()]
-    public string $email;
-
+    #[DotCom()]
+    public string $email = '';
+    
+    #[Assert\NotBlank()]
     #[Assert\Length(min:2)]
-    public string $message;
+    public string $message = '';
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
-    public function getMessage(): ?string
-    {
-        return $this->message;
-    }
-    public function getMail(): ?string
-    {
-        return $this->email;
-    }
+    #[Assert\NotBlank()]
+    public string $services = '';
+    
 }
 
 ?>
