@@ -1,0 +1,39 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}Categories Manager{% endblock %}
+
+{% block body %}
+  <div class="d-flex align-items-center gap-3">
+        <h1>Categories Manager</h1>
+        <a href={{path("admin.category.create")}} ><button type="button" class="btn btn-primary">CREATE</button></a>
+    </div>      
+    
+    
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Last Update</th>
+                <th scope="col">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for category in categories %}
+            <tr>
+                <td>{{category.id}}</td>
+                <td>{{category.name}}</td>
+                <td>{{category.updatedAt | date}}</td>
+                <td class="d-flex gap-3">
+                    <a href={{path("admin.category.edit", {id: category.id})}}><button type="button" class="btn btn-info">EDIT</button></a>
+                    <form action={{path("admin.category.delete", {id: category.id})}} method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submitr" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}
