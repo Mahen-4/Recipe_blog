@@ -15,6 +15,7 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Title</th>
+                <th scope="col">Category</th>
                 <th scope="col">Options</th>
             </tr>
         </thead>
@@ -23,6 +24,7 @@
             <tr>
                 <td>{{recipe.id}}</td>
                 <td><a href={{path("admin.recipe.edit", {id: recipe.id})}} />{{recipe.title}}</td>
+                <td><a href={{path("admin.recipe.edit", {id: recipe.id})}} />{{recipe.category.name | default('')}}</td>
                 <td class="d-flex gap-3">
                     <a href={{path("admin.recipe.edit", {id: recipe.id})}}><button type="button" class="btn btn-info">EDIT</button></a>
                     <form action={{path("admin.recipe.delete", {id: recipe.id})}} method="post">

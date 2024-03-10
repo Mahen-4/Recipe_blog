@@ -2,9 +2,12 @@
 
 namespace App\Form;
 
+use App\Entity\Category;
 use App\Entity\Recipe;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Event\PreSubmitEvent;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -27,10 +30,15 @@ class RecipeType extends AbstractType
             ->add('slug', TextType::class, [
                 'required' => false
             ])
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'name'
+            ])
             ->add('content', TextareaType::class, [
                 'empty_data' => ''
             ])
-             ->add('duration')
+            ->add('duration')
+            ->add('thumbnailFile', FileType::class)
             ->add('save', SubmitType::class,[
                 'label' => 'Save'
             ])

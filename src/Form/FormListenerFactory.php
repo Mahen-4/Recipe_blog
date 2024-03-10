@@ -13,8 +13,7 @@ class FormListenerFactory{
         return function (PreSubmitEvent $event) use ($field){
             $data = $event->getData();
             $slugger = new AsciiSlugger();
-            $slug = $slugger->slug($data[$field]);
-            $data['slug'] = $slug;
+            $data['slug'] = strtolower($slugger->slug($data[$field]));
             $event->setData($data);
         };
     }
